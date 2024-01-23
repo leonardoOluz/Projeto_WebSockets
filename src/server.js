@@ -4,6 +4,7 @@ import url from 'url';
 import path from 'path';
 import http from 'http';
 import { Server } from 'socket.io';
+import "./dbConnect.js";
 
 /* Constantes */
 const app = express();

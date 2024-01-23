@@ -1,18 +1,18 @@
 /* Import module io in the server */
 import io from "./server.js";
 
-let documentos = [
+const documentos = [
     {
         nome: "JavaScript",
-        documentos: "Documento de JavaScript..."
+        texto: "Documento de JavaScript..."
     },
     {
         nome: "Node",
-        documentos: "Documento de Node..."
+        texto: "Documento de Node..."
     },
     {
         nome: "Socket.io",
-        documentos: "Documento de Socket.io..."
+        texto: "Documento de Socket.io..."
     },
 ]
 
@@ -28,14 +28,16 @@ io.on('connection', (socket) => {
         const documento = selecionarDocumento(nomeDocumento);
         
         if (documento) {
-            returnTextDoc(documento.documentos);
+            returnTextDoc(documento.texto);
         }
         
     })
 
     socket.on('text_edition', ({ texto, nomeDocumento }) => {
         const documento = selecionarDocumento(nomeDocumento);
+        
         if (documento) {
+            documento.texto = texto;
             socket.to(nomeDocumento).emit('text_edition_client', texto);
         }
     });
@@ -43,7 +45,7 @@ io.on('connection', (socket) => {
 });
 
 function selecionarDocumento(nomeDocumento){
-    let documento = documentos.find((documento) => {
+    const documento = documentos.find((documento) => {
         return documento.nome.includes(nomeDocumento);
     });
     return documento;

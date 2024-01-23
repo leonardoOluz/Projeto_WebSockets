@@ -17,9 +17,8 @@ textEditor.addEventListener("keyup", () => {
     });
 });
 
-
 function atualizarDocumento(texto) {
-    textEditor.innerText = texto;
+    textEditor.value = texto;
 }
 
 
