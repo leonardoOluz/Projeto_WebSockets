@@ -5,7 +5,7 @@ import {
     salvarDocumento,
     selecionarDocumento,
     solicitarArrayDoc
-} from "./documentsDB.js";
+} from "./db/documentsDB.js";
 import io from "./server.js";
 
 /* Connection with document.html */

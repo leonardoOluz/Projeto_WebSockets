@@ -7,7 +7,7 @@ const spanAlert = document.querySelector("[data-alert]");
 
 function listNameDoc(nomeDocumento) {
   containerDoc.innerHTML += `
-    <a href="documento.html?nome=${nomeDocumento}" class="list-group-item list-group-item-action" id="documents-${nomeDocumento}">
+    <a href="./documento/index.html?nome=${nomeDocumento}" class="list-group-item list-group-item-action" id="documents-${nomeDocumento}">
         ${nomeDocumento}
       </a>
     `
