@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb";
-import 'dotenv/config';
 
 const DB = process.env.DB; 
 const PASS = process.env.PASS;

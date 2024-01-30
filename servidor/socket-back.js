@@ -1,4 +1,5 @@
 /* Import module io in the server */
+import "dotenv/config.js"
 import cadastroDeUsuario from "./registrarEventos/cadastro.js";
 import registrarEventosDocumentos from "./registrarEventos/documentos.js";
 import registrarEventosInicio from "./registrarEventos/inicio.js";
