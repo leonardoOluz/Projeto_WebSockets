@@ -6,8 +6,9 @@ function verificarLoginUsuario(dados){
     socket.emit("verificar_login", dados);
 };
 
-socket.on("autenticado_sucesso", () => {
+socket.on("autenticado_sucesso", (tokenJwt) => {
     alert("Autenticado com sucesso");
+    console.log(tokenJwt)
     window.location.href = "/";
 });
 
