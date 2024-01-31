@@ -1,6 +1,6 @@
 import { checkNewDoc, listNameDoc, updateDocSucessoful } from "./index.js";
 
-const socket = io("http://localhost:5000");
+const socket = io();
 
 socket.emit("solicitar_doc", (listaDoc) => {
     listaDoc.forEach((document) => {

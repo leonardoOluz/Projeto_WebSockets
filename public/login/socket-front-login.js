@@ -1,3 +1,4 @@
+import {definerCookie} from "../utils/cookies.js";
 import loginErrado from "./login.js";
 
 const socket = io();
@@ -7,8 +8,8 @@ function verificarLoginUsuario(dados){
 };
 
 socket.on("autenticado_sucesso", (tokenJwt) => {
+    definerCookie("tokenJwt", tokenJwt);
     alert("Autenticado com sucesso");
-    console.log(tokenJwt)
     window.location.href = "/";
 });
 
