@@ -1,4 +1,5 @@
 import { cadastrarUsuarios, encontrarUsuario } from "../db/usuariosDB.js";
+import gerarJwt from "../utils/gerarJwt.js";
 
 function cadastroDeUsuario(socket, io) {
     socket.on("cadastrar_usuario", async (dados) => {
@@ -8,7 +9,8 @@ function cadastroDeUsuario(socket, io) {
         if (pesquisaUsuario === null) {
             const resultado = await cadastrarUsuarios(dados);
             if (resultado.acknowledged) {
-                socket.emit("cadastro_sucesso");
+                const token = gerarJwt({nomeUsuario: dados.nome});
+                socket.emit("cadastro_sucesso", token);
             } else {
                 socket.emit("cadastro_erro");
             };
