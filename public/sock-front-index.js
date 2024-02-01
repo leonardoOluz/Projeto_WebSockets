@@ -1,6 +1,16 @@
 import { checkNewDoc, listNameDoc, updateDocSucessoful } from "./index.js";
+import { obterCookie } from "./utils/cookies.js";
 
-const socket = io();
+const socket = io("/usuarios",{
+    auth: {
+        token: obterCookie("tokenJwt"),
+    }
+});
+
+socket.on(("connect_error"), (error) => {
+    alert(error);
+    window.location.href = "./login/index.html";
+});
 
 socket.emit("solicitar_doc", (listaDoc) => {
     listaDoc.forEach((document) => {
