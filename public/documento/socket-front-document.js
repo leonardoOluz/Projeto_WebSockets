@@ -1,5 +1,5 @@
 import { obterCookie } from "../utils/cookies.js";
-import { atualizarDocExcluido, atualizarDocumento } from "./documento.js";
+import { atualizarDocExcluido, atualizarDocumento, showLoginPerson, tratarAutorizacaoSucesso } from "./documento.js";
 
 const socket = io("/usuarios", {
   auth: {
@@ -7,16 +7,20 @@ const socket = io("/usuarios", {
   },
 });
 
+socket.on("autorizacao_sucesso", tratarAutorizacaoSucesso)
+
 socket.on(("connect_error"), (error) => {
   alert(error);
   window.location.href = "./login/index.html";
 });
 
-function enviarNomeDocumento(nomeDocumento) {
-  socket.emit("selecionar_documento", nomeDocumento, (returnTextDoc) => {
+function enviarNomeDocumento(dadosEntrada) {
+  socket.emit("selecionar_documento", dadosEntrada, (returnTextDoc) => {
     atualizarDocumento(returnTextDoc);
   });
 };
+
+socket.on("user_in_doc", showLoginPerson);
 
 function enviarTexto(dados) {
   socket.emit('text_edition', dados);

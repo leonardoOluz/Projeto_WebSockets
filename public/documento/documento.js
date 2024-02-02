@@ -5,10 +5,13 @@ const nomeDocumento = parametros.get("nome");
 const btnExcluir = document.getElementById("excluir-documento");
 const textEditor = document.getElementById("editor-texto");
 const titulo = document.querySelector("#titulo-documento");
+const ulUserLogado = document.getElementById("usuarios-conectados");
 
 titulo.textContent = nomeDocumento || "Documento sem título";
 
-enviarNomeDocumento(nomeDocumento);
+function tratarAutorizacaoSucesso(payloadToken) {
+    enviarNomeDocumento({ nomeDocumento, nomeUsuario: payloadToken.nomeUsuario });
+};
 
 btnExcluir.addEventListener("click", () => {
     excluirDocument(nomeDocumento)
@@ -16,7 +19,7 @@ btnExcluir.addEventListener("click", () => {
 
 textEditor.addEventListener("keyup", () => {
     enviarTexto({
-        texto: textEditor.value, 
+        texto: textEditor.value,
         nomeDocumento,
     });
 });
@@ -25,11 +28,23 @@ function atualizarDocumento(texto) {
     textEditor.value = texto;
 };
 
-function atualizarDocExcluido(nome){
+function atualizarDocExcluido(nome) {
     if (nome === nomeDocumento) {
-        window.location.href = "/";        
+        window.location.href = "/";
     };
 };
 
+function showLoginPerson(arrayUser) {
+    console.log(arrayUser);
+    ulUserLogado.innerHTML = "";
+    
 
-export { atualizarDocumento, atualizarDocExcluido };
+    arrayUser.forEach((user) => {
+        ulUserLogado.innerHTML += `
+    <li class="list-group-item">${user}</li>
+    `
+    });
+};
+
+
+export { atualizarDocumento, atualizarDocExcluido, tratarAutorizacaoSucesso, showLoginPerson };

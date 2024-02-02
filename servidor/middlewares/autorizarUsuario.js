@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 
 function autorizarUsuario(socket, next) {
     const tokenJwt = socket.handshake.auth.token;
-    console.log(tokenJwt);
     try {
-        jwt.verify(tokenJwt, process.env.KEY);
+        const payloadToken = jwt.verify(tokenJwt, process.env.KEY);
+        socket.emit("autorizacao_sucesso", payloadToken);
         next();
     } catch (error) {
         next(error);
