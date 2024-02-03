@@ -1,20 +1,32 @@
 import { excluirDocumentDB, salvarDocumento, selecionarDocumento } from "../db/documentsDB.js";
-import { checkUserforDoc, removeUserDoc, userAndDocLogin } from "../utils/addDocAndUser.js";
+import { checkUserforDoc, checkarUserInDoc, removeUserDoc, userAndDocLogin } from "../utils/addDocAndUser.js";
 
 function registrarEventosDocumentos(socket, io) {
     socket.on("selecionar_documento", async ({ nomeDocumento, nomeUsuario }, returnTextDoc) => {
         const documento = await selecionarDocumento(nomeDocumento);
 
         if (documento) {
-            socket.join(nomeDocumento);
-            
-            userAndDocLogin({ nomeDocumento, nomeUsuario });
-            
-            const arrayUser = checkUserforDoc(nomeDocumento);
+            const userInDoc = checkarUserInDoc(nomeDocumento, nomeUsuario);
 
-            io.to(nomeDocumento).emit("user_in_doc", arrayUser);
+            if (!userInDoc) {
 
-            returnTextDoc(documento.texto);
+                socket.data = {
+                    userInSeccao: true
+                }
+
+                socket.join(nomeDocumento);
+
+                userAndDocLogin({ nomeDocumento, nomeUsuario });
+
+                const arrayUser = checkUserforDoc(nomeDocumento);
+
+                io.to(nomeDocumento).emit("user_in_doc", arrayUser);
+
+                returnTextDoc(documento.texto);
+
+            } else {
+                socket.emit("user_in_seccao");
+            };           
         };
 
         socket.on("text_edition", async ({ texto, nomeDocumento }) => {
@@ -33,11 +45,15 @@ function registrarEventosDocumentos(socket, io) {
         });
 
         socket.on("disconnect", () => {
+            if (socket.data.userInSeccao) {
+                
             removeUserDoc(nomeDocumento, nomeUsuario);
 
             const arrayUser = checkUserforDoc(nomeDocumento);
 
             io.to(nomeDocumento).emit("user_in_doc", arrayUser);
+                
+            };
         });
 
     });

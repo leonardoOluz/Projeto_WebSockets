@@ -20,6 +20,11 @@ function enviarNomeDocumento(dadosEntrada) {
   });
 };
 
+socket.on("user_in_seccao", () => {
+  alert("Documento aberto em outra aba!");
+  window.location.href = "/";
+});
+
 socket.on("user_in_doc", showLoginPerson);
 
 function enviarTexto(dados) {
